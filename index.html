@@ -7,15 +7,63 @@
   <title>Todo List</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
-  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI library -->
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
   
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+  <!-- <div class="top">
+    <h1>Notes App</h1>
+    <button class="createBtn">Create</button>
+  </div> -->
+
+  <div class="button-bottom createBtn">
+    <!-- <button class="createBtn"></button> -->
+  </div>
+
+  <!-- <div id="sortable" class="notesContainer"> </div> -->
+  <div class="column-div">
+    <div class="column A"> </div>
+    <div class="column notesContainer B">
+      
+      <!-- <div class="card">
+        <div class="card__head">
+          <input placeholder="Add a name" type="text" class="card__heading">
+          <div class="card__heading-2">
+            <button class="remove">
+              <i class="fa fa-remove"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card__sub-heading marGleft">
+          <div class="card__total-tasks"><span id="task-count">4</span> tasks</div>
+          <div class="card__status ">
+            <h3 class="card__status--text activeSub">All</h3>
+            <h3 class="card__status--text">Active</h3>
+            <h3 class="card__status--text">Completed</h3>
+          </div>
+        </div>
+        <input placeholder="Add a new task..." type="text" class="card__input">
+        <ul id="list" class="">
+        </ul>
+      </div> -->
+    
+    </div>
+    <div class="column C"> </div>
+  </div>
   
-  <div class="card">
+  <!-- <div class="card">
     <h1 class="card__heading marGtop marGleft">Tue Jun 20 2023</h1>
     <div class="card__sub-heading marGleft">
       <div class="card__total-tasks"><span id="task-count">4</span> tasks</div>
@@ -27,27 +75,9 @@
     </div>
     <input placeholder="Add a new task..." type="text" class="card__input">
     <ul id="list" class="">
-      <!-- <li id="list-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Morning Walk
-        </label>
-      </li>
-      <li>
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Book Flight to Hungary
-        </label>
-      </li> -->
     </ul>
-  </div>
+  </div>-->
   <div id="smallDiv" class="smallDiv">
-    <!-- <ul>
-      <li id="smallDivEdit">Edit</li>
-      <li id="smallDivDelete">Delete</li>
-    </ul> -->
   </div>
   <div class="whiteDivBackground"></div>
   <div class="whiteDiv">
@@ -59,11 +89,10 @@
       <button class="btn whiteDiv__cancel">Cancel</button>
       <button class="btn whiteDiv__save">Save</button>
     </div>
-  </div>
-
+  </div> 
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  
+  <script src="firebase.js"></script>
   <script src="jscript.js"></script>
+  <script src="page.js"></script>
 </body>
 </html>

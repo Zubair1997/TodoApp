@@ -1,64 +1,3 @@
-let taskCount = 0;
-// let tasks = [
-//   { id: "A", name: "Morning Walk", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" },
-//   { id: "AB", name: "Book Flight to Hungary", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" },
-//   { id: "ABC", name: "Meeting with Holden Caulfield", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" },
-//   { id: "ABCD", name: "Blog about CSS box model", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" }
-// ];
-let tasks = [];
-$(document).ready(function() {
-  CallfetchTasksHandler()
-  $(".card__heading").text(getDate());
-  $(".card__input").on("keydown", function(event) {
-    if (event.keyCode === 13 && $(this).val() !== "") {
-      let taskName = $(this).val().trim();
-      let objectTask = taskObjectCreate(taskName);
-      $(".card__input").val("");
-      tasks.unshift(objectTask);
-      let taskWord = (tasks.length <= 1) ? " Task" : " Tasks";
-      $(".card__total-tasks").text(tasks.length + taskWord);
-      addTask(objectTask, "animateClass");
-    }
-  });
-  $('.card__status--text').click(function() {
-    $('.card__status--text').removeClass('activeSub');
-    $(this).addClass('activeSub');
-    changeShowList($(this).text());
-  });
-  onSort();
-});
-
-function onSort() {
-  //https://sortablejs.github.io/Sortable/#grid
-  var sortable = new Sortable(document.getElementById("list"), {
-    animation: 150,
-    ghostClass: 'blue-background-class',
-    onEnd: function (event) {
-      var newOrder = Array.from(event.target.children).map(function (listItem) {
-        return listItem.getAttribute("id");
-      });
-
-      console.log('New order:', newOrder);
-      // Save the new order or perform any necessary actions
-
-      var newArray  = newOrder.map(function (itemId) {
-        return getItemById(itemId);
-      });
-
-      console.log('Updated items:', newArray );
-      
-      tasks.sort((a, b) => {
-        let aIndex = newArray.findIndex(item => item.taskId === a.id);
-        let bIndex = newArray.findIndex(item => item.taskId === b.id);
-        return aIndex - bIndex;
-      });
-      
-      console.log(tasks);
-      CalladdTaskHandler()
-    }
-  });
-}
-
 async function CallfetchTasksHandler(){
   try {
     await fetchTasksHandler();
@@ -68,27 +7,27 @@ async function CallfetchTasksHandler(){
 }
 
 const fetchTasksHandler = async () => {
-  try {
-    const response = await fetch('https://project-301fd-default-rtdb.firebaseio.com/tasks.json');
-    if (!response.ok) {
-      throw new Error('Something went wrong!');
-    }
-    const data = await response.json();
-    tasks = data;
+  // try {
+  //   const response = await fetch('https://project-301fd-default-rtdb.firebaseio.com/tasks.json');
+  //   if (!response.ok) {
+  //     throw new Error('Something went wrong!');
+  //   }
+  //   const data = await response.json();
+  //   tasks = data;
 
-    var key = null;
-    for (const keys in data) {
-      key = keys;
-    }
-    tasks = extractArrayObjects(data[key]);
-    console.log(tasks);
-    $(".card__total-tasks").text(tasks.length + " Tasks");
-    for (const task of tasks) {
-      addTask(task);
-    }
-  } catch (error) {
-    console.log('Error:', error);
-  }
+  //   var key = null;
+  //   for (const keys in data) {
+  //     key = keys;
+  //   }
+  //   tasks = extractArrayObjects(data[key]);
+  //   console.log(tasks);
+  //   $(".card__total-tasks").text(tasks.length + " Tasks");
+  //   for (const task of tasks) {
+  //     addTask(task);
+  //   }
+  // } catch (error) {
+  //   console.log('Error:', error);
+  // }
 };
 
 function extractArrayObjects(obj) {
@@ -105,19 +44,19 @@ async function CalladdTaskHandler(){
 }
 
 const addTaskHandler = async (tasks) => {
-  try {
-    const response = await fetch('https://project-301fd-default-rtdb.firebaseio.com/tasks/-NYxVz5uLIMqWEmtsNg3.json', {
-      method: 'PUT',
-      body: JSON.stringify(tasks),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.log('Error:', error);
-  }
+  // try {
+  //   const response = await fetch('https://project-301fd-default-rtdb.firebaseio.com/tasks/-NYxVz5uLIMqWEmtsNg3.json', {
+  //     method: 'PUT',
+  //     body: JSON.stringify(tasks),
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   });
+  //   const data = await response.json();
+  //   console.log(data);
+  // } catch (error) {
+  //   console.log('Error:', error);
+  // }
 };
 
 function getItemById(itemId) {
@@ -138,34 +77,56 @@ function getItemById(itemId) {
   return item;
 }
 
-function addTask(task, animation = null) {
+function addTask(task, animation = null, ulId, card__totaltasks) {
+  console.log(tasks);
   var liID = generateRandomId(5);
   var checkboxid = liID + "Checkbox";
   var menuID = liID + "Menu";
-  var smallDiv = liID + "SmallDiv";
+  var inputId = liID + "Input";
   var labelId = liID + "Label";
 
+  // var listItem = $("<li>", { id: liID }).append(
+  //   $("<label>",  {id: labelId, class: "checkbox-container" }).append(
+  //     $("<input>", {
+  //       id: checkboxid,
+  //       onclick: `changeBackground('${checkboxid}', '${liID}', '${task.id}', '${ulId}')`,
+  //       type: "checkbox"
+  //     }),
+  //     $("<span>", { class: "checkmark", id: task.id }),
+  //      task.name
+  //   ),
+  //   $("<div>", {
+  //     id: menuID,
+  //     onclick: `onSmallDiv('${menuID}', '${task.id}', '${liID}', '${labelId}', '${ulId}', '${card__totaltasks}')`,
+  //     class: "menu"
+  //   })
+  // );
+
   var listItem = $("<li>", { id: liID }).append(
-    $("<label>",  {id: labelId, class: "checkbox-container" }).append(
+    $("<label>", { id: labelId, class: "checkbox-container" }).append(
       $("<input>", {
         id: checkboxid,
-        onclick: `changeBackground('${checkboxid}', '${liID}', '${task.id}')`,
-        type: "checkbox"
+        onclick: `changeBackground('${checkboxid}', '${liID}', '${task.id}', '${ulId}')`,
+        type: "checkbox",
       }),
       $("<span>", { class: "checkmark", id: task.id }),
-      task.name
+      $("<input>", {class: "list", id: inputId,
+        type: "text",
+        value: task.name,
+        onchange: `updateTaskName('${task.id}', '${ulId}', this.value)`,
+      })
     ),
     $("<div>", {
-      id: menuID,
-      onclick: `onSmallDiv('${menuID}', '${task.id}', '${liID}', '${labelId}')`,
-      class: "menu"
+      id: menuID,//deleteList(taskID, liID, ulId, card__totaltasks)
+      onclick: `deleteList('${task.id}', '${liID}', '${ulId}', '${card__totaltasks}')`,
+      class: "menu",
     })
   );
 
   if (animation === null) {
-    $("#list").append(listItem);
+    $("#"+ulId).append(listItem);
   } else {
-    $("#list").prepend(listItem);
+    $("#"+ulId).prepend(listItem);
     CalladdTaskHandler()
   }
 
@@ -176,11 +137,24 @@ function addTask(task, animation = null) {
 
   if (task.status === 'completed') {
     $('#'+checkboxid).prop('checked', true);
-    changeBackground(checkboxid, liID, task.id);
+    changeBackground(checkboxid, liID, task.id, ulId);
   }
 }
 
-function onMenuDiv(taskID, labelId) {
+function updateTaskName(taskID, ulId, newTaskName){
+    //let newTaskName = $("#whiteDiv-Name").val();
+    const taskIndex = tasks[ulId].findIndex(task => task.id === taskID);
+
+    // If the task exists, update its name and insert it back into the array
+    if (taskIndex !== -1 && tasks[ulId][taskIndex].name != newTaskName.trim()) {
+      tasks[ulId][taskIndex].name = newTaskName;
+      CalladdTaskHandler()
+      //console.log(task.id + " Updated");
+      //changeTaskNameInSpan(taskID, newTaskName, labelId, ulId);
+    }
+}   
+
+function onMenuDiv(taskID, labelId, ulId) {
   $('.whiteDiv').html('');
   var whiteDiv = $("<div>", { class: "whiteDiv" });
 
@@ -210,24 +184,24 @@ function onMenuDiv(taskID, labelId) {
     closeWhiteDiv();
   });
 
- let task = tasks.find(task => task.id === taskID);
+ let task = tasks[ulId].find(task => task.id === taskID);
  $("#whiteDiv-Name").val(task.name);
  $(".whiteDiv__save").click(function() {
     let newTaskName = $("#whiteDiv-Name").val();
-    const taskIndex = tasks.findIndex(task => task.id === taskID);
+    const taskIndex = tasks[ulId].findIndex(task => task.id === taskID);
 
     // If the task exists, update its name and insert it back into the array
-    if (taskIndex !== -1 && tasks[taskIndex].name != newTaskName.trim()) {
-      tasks[taskIndex].name = newTaskName;
+    if (taskIndex !== -1 && tasks[ulId][taskIndex].name != newTaskName.trim()) {
+      tasks[ulId][taskIndex].name = newTaskName;
       CalladdTaskHandler()
       //console.log(task.id + " Updated");
-      changeTaskNameInSpan(taskID, newTaskName, labelId);
+      changeTaskNameInSpan(taskID, newTaskName, labelId, ulId);
     }
     closeWhiteDiv();
  });
 }
 
-function changeTaskNameInSpan(taskId, newName, labelId) {
+function changeTaskNameInSpan(taskId, newName, labelId, ulId) {
   // const labelElement = $("#" + labelId);
   // labelElement.text(newName);
   // console.log(labelElement);
@@ -237,7 +211,7 @@ function changeTaskNameInSpan(taskId, newName, labelId) {
   // } else {
   //   console.log(`Unable to find label with ID: ${labelId}`);
   // }
-  changeShowList("All")
+  changeShowList("All", ulId)
 }
 
 function closeWhiteDiv(){
@@ -250,7 +224,8 @@ function closeWhiteDiv(){
 }
 
 let prepositionTop = null;
-function onSmallDiv(menuID, taskID, liID, labelId) {
+function onSmallDiv(menuID, taskID, liID, labelId, ulId, card__totaltasks) {
+    console.log(menuID);
     var targetElement = $('#' + menuID);
     var smallDiv = $('#smallDiv');
     smallDiv.html('');
@@ -265,7 +240,7 @@ function onSmallDiv(menuID, taskID, liID, labelId) {
     var targetPosition = targetElement.offset();
   
     var smallDivTop = targetPosition.top + targetElement.outerHeight() + 10; 
-    var smallDivLeft = 773.38330078125 + 200;
+    var smallDivLeft = (targetPosition.left) + 270;
             
     if (smallDiv.is(':visible') && (prepositionTop == smallDivTop || prepositionTop == null)) {
       smallDiv.hide();
@@ -276,47 +251,47 @@ function onSmallDiv(menuID, taskID, liID, labelId) {
     }
   
     $("#smallDivDelete").click(function() {
-      deleteList(taskID, liID);
+      deleteList(taskID, liID, ulId, card__totaltasks);
       $("#smallDiv").hide();
     });
 
     $("#smallDivEdit").click(function() {
-        onMenuDiv(taskID, labelId);
+        onMenuDiv(taskID, labelId, ulId);
         $("#smallDiv").hide();
     });
 }  
 
-function changeShowList(display) {
-  $("#list").empty();
+function changeShowList(display, ulId) {
+  $("#"+ulId).empty();
   if (display === "All") {
-    for (const task of tasks) {
-      addTask(task);
+    for (const task of tasks[ulId]) {
+      addTask(task, null, ulId);
     }
   } else if (display === "Active") {
-    for (const task of tasks) {
+    for (const task of tasks[ulId]) {
       if (task.status == 'active') {
-        addTask(task);
+        addTask(task, null, ulId);
       }
     }
   } else if (display === "Completed") {
-    for (const task of tasks) {
+    for (const task of tasks[ulId]) {
       if (task.status == 'completed') {
-        addTask(task);
+        addTask(task, null, ulId);
       }
     }
   }
 }
 
-function deleteList(taskId, liId) {
+function deleteList(taskId, liId, ulId, card__totaltasks) {
   $('#'+liId).addClass('animateClassReverse').delay(470).queue(function(next) {
     $(this).remove();
     next();
   });
-  tasks = $.grep(tasks, function(task) {
+  tasks[ulId] = $.grep(tasks[ulId], function(task) {
     return task.id !== taskId;
   });
-  let taskWord = (tasks.length <= 1) ? " Task" : " Tasks";
-  $(".card__total-tasks").text(tasks.length + taskWord);
+  let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
+  $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
   CalladdTaskHandler();
 }
 
@@ -328,14 +303,15 @@ function closeAboveDiv() {
   $('.whiteDivBackground').css('display', 'none');
 }
   
-function changeBackground(checkboxId, liID, taskId) {
+function changeBackground(checkboxId, liID, taskId, ulId) {
+  console.log(tasks[ulId]);
   var checkbox = $("#" + checkboxId)[0];
   var listItem = $("#" + liID);
   //Status for checking if task.status == completed/active then do not reposition/change array
   //and do not reposition list.
   var beforeStatus = null;
   if (checkbox.checked) {
-    $.each(tasks, function(index, task) {
+    $.each(tasks[ulId], function(index, task) {
       if (task.id === taskId && task.status != "completed") {
         beforeStatus = "active"
         task.status = "completed";
@@ -357,12 +333,12 @@ function changeBackground(checkboxId, liID, taskId) {
     
     if(beforeStatus != "completed"){
       //Shifting the element to last in task array
-      const index = tasks.findIndex(task => task.id === taskId);
+      const index = tasks[ulId].findIndex(task => task.id === taskId);
       if (index !== -1) {
-        const element = tasks.splice(index, 1)[0];
+        const element = tasks[ulId].splice(index, 1)[0];
         let lastCompleteIndex = -1;
-        for (let i = tasks.length - 1; i >= 0; i--) {
-          if (tasks[i].status === 'completed') {
+        for (let i = tasks[ulId].length - 1; i >= 0; i--) {
+          if (tasks[ulId][i].status === 'completed') {
             lastCompleteIndex = i;
           } else {
             break;
@@ -371,17 +347,17 @@ function changeBackground(checkboxId, liID, taskId) {
         if (lastCompleteIndex !== -1) {
           // Move the list item to the last position
           listItem.parent().children().eq(lastCompleteIndex).after(listItem)
-          tasks.splice(lastCompleteIndex, 0, element);
+          tasks[ulId].splice(lastCompleteIndex, 0, element);
         } else {
           listItem.appendTo(listItem.parent());
-          tasks.push(element);
+          tasks[ulId].push(element);
         }
         CalladdTaskHandler()
       }
       //console.log(tasks);
     }
   } else {
-    $.each(tasks, function(index, task) {
+    $.each(tasks[ulId], function(index, task) {
       if (task.id === taskId && task.status != "active") {
         beforeStatus = "completed"
         task.status = "active";
@@ -404,10 +380,10 @@ function changeBackground(checkboxId, liID, taskId) {
     if(beforeStatus != "active"){
       listItem.prependTo(listItem.parent());
       //Shifting the element to first in task array
-      const index = tasks.findIndex(task => task.id === taskId);
+      const index = tasks[ulId].findIndex(task => task.id === taskId);
       if (index !== -1) {
-        const element = tasks.splice(index, 1)[0];
-        tasks.unshift(element);
+        const element = tasks[ulId].splice(index, 1)[0];
+        tasks[ulId].unshift(element);
       }
       CalladdTaskHandler()
       //console.log(tasks);
@@ -415,12 +391,12 @@ function changeBackground(checkboxId, liID, taskId) {
   }
 }
 
-function taskObjectCreate(name) {
+function taskObjectCreate(name, ulId=null) {
   const currentDate = new Date();
   const taskObject = {
     id: generateRandomId(8),
     name: '',
-    //order: 0,
+    ulId: ulId,
     status: 'active',
     date: currentDate.toLocaleDateString(),
     // duedate: currentDate.toLocaleDateString(),

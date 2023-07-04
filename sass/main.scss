@@ -41,7 +41,7 @@ html {
 
     background-image: linear-gradient(to right bottom, rgb(246, 210, 216), rgb(188, 241, 255),rgb(218, 255, 255));
     background-repeat: no-repeat;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 body {
@@ -51,31 +51,73 @@ body {
   line-height: 1.7;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   
-  //height: 100vh;
+  //height: 100%;
+  width: 100vw;
 }
 
 .marGtop{margin-top: 1.5rem;}
 .marGleft{margin-left: 2.5rem;}
 
 .card {
-  margin-top: 3rem;
-  //margin-bottom: 50rem;
+  margin: 1.3rem 0;
   display: flex;
   flex-direction: column;
   border-radius: 15px;
   //padding: 1.5rem 2.5rem;
   //padding-bottom: 1.5rem;
   width: 45rem;
-  //height: 0%;
+  min-height: 10rem;
+  max-height: 40rem;
   background-color: white;
   overflow: hidden;
 
+  // &__heading {
+  //   font-weight: 300;
+  //   color: #455963;
+  // }
+
+  &__head {
+    display: flex;
+    position: relative;
+  }
+
   &__heading {
-    font-weight: 300;
-    color: #455963;
+    position: relative;
+    padding: 1.3rem 0 .4rem 2rem;
+    border: none;
+    //background-color: rgb(255, 217, 249);
+    //border-bottom: .5px solid rgb(222, 222, 222);
+    outline: none;
+    font-size: 2.3rem;
+    //font-weight: 0;
+    font-family: Helvetica;
+    color: rgb(100, 100, 100);
+    width: 60%;
+    border-radius: 0 3px 3px 0;
+    z-index: 5;
+    overflow: auto;
+
+    &-2 {
+      cursor: pointer;
+      flex: 1;
+      transition: all .35s cubic-bezier(0.39, 0.575, 0.565, 1);
+
+      &:hover {
+        background-color: rgb(124, 255, 192);
+      }
+
+      // &:focus {
+      //   background-color: rgb(0, 87, 45);
+      // }
+    }
+
+    &::placeholder {
+      opacity: .2;
+    }
   }
 
   &__sub-heading {
@@ -122,14 +164,12 @@ body {
   }
 
   ul {
-    //margin-top: 2rem;
     display: flex;
     flex-direction: column;
     list-style: none;
     font-size: 1.5rem;
     //max-height: 20rem;
     overflow-x: hidden;
-    //overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #d6e2eb #ecf7fe;
     transition: all 3s;
@@ -255,14 +295,15 @@ body {
 }
 
 .menu:after {
-  content: '\2807';
+  content: '\2716'; /* The keyword 'delete' represents the delete icon in Material Icons */
+  font-family: 'Material Icons';/* Font Awesome font family */
   opacity: 0;
   font-size: 1.6rem;
   position: absolute;
   color: rgb(180, 180, 180);
   cursor: pointer;
-  right: 0;
-  top: 50%;
+  right: 3%;
+  top: 45%;
   transform: translate(-50%, -50%);
   transition: opacity .2s;
 }
@@ -425,4 +466,135 @@ body {
   border-radius: 15rem;
   color: white;
   transition: all .3s;
+}
+
+// .createBtn {
+//   font-size: 18px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   padding: 10px 30px;
+//   letter-spacing: 2px;
+//   color: white;
+//   background-color: black;
+//   border: none;
+//   border-radius: 10px;
+//   cursor: pointer;
+// }
+
+// .createBtn:active {
+//   transform: scale(0.95);
+// }
+
+.notesContainer {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+}
+
+#sortable { 
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  background-color: #38bb90;
+}
+
+.portlet-placeholder {
+  border: 1px dotted black;
+  margin: 0 1em 1em 0;
+  height: 50px;
+  width: 100%;
+}
+
+.column-div {
+  width: 100%;
+  display: flex;
+  // background-color: aquamarine;
+  justify-content: space-between;
+}
+
+.column {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  float: left;
+  padding-bottom: 7rem;
+  background-color: rgba(249, 248, 248, .4);
+}
+
+.list {
+  outline: none;
+  border: none;
+  background-color: inherit;
+  font-weight: 100;
+  font-size: 1.6rem;
+  letter-spacing: .05rem;
+  color: inherit;
+  height: 100%;
+}
+//#sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
+
+.button-bottom {
+  cursor: pointer;
+  position: absolute;
+  right: 3%;
+  top: 85%;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 100%;
+  background-image: linear-gradient(to right bottom, rgb(255, 207, 117), rgb(255, 255, 110));
+  transform: scale(0.95);
+
+  &::after {
+    content: "+";
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 5.5rem;
+    font-weight: 300;
+  }
+}
+
+.remove {
+  z-index: 300;      
+  font-family: 'Material Icons';/* Font Awesome font family */
+  //opacity: 0;
+  position: absolute;
+  color: rgb(180, 180, 180);
+  left: 95%;
+  top: 23%;
+  transform: translate(-50%, -50%);
+  font-size: 3;
+  font-weight: 300;
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  transition: all .2s;
+
+  &:hover {
+    opacity: 1;
+  }  
+}
+
+.animateRemoveCard {
+  animation: removeCard .3s ease-in;
+}
+
+@keyframes removeCard {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
 }
