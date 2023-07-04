@@ -1,0 +1,428 @@
+@mixin respond($breakpoint) {
+  @if ($breakpoint == phone) {
+      @media only screen and (max-width: 37.5em) { @content };    //600px
+  }
+  @if ($breakpoint == tab-port) {
+      @media only screen and (max-width: 56.25em) { @content };     //900px
+  }
+  @if ($breakpoint == tab-land) {
+      @media only screen and (max-width: 75em) { @content };    //1200px
+  }
+  @if ($breakpoint == tab-land-big) {
+    @media only screen and (max-width: 93.75em) { @content };    //1500px
+  }
+  @if ($breakpoint == big-desktop) {
+      @media only screen and (min-width: 112.5em) { @content };    //1800
+  }
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+ }
+
+html {
+  font-size: 62.5%; //1 rem = 10px; 10px/16px = 62.5%
+  
+    @include respond(tab-land) { // width < 1200?
+        font-size: 56.25%; //1 rem = 9px, 9/16 = 50%
+    }
+ 
+    @include respond(tab-port) { // width < 900?
+        font-size: 50%; //1 rem = 8px, 8/16 = 50%
+    }
+    
+    @include respond(big-desktop) {
+        font-size: 75%; //1rem = 12, 12/16
+    }
+
+    background-image: linear-gradient(to right bottom, rgb(246, 210, 216), rgb(188, 241, 255),rgb(218, 255, 255));
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+body {
+  box-sizing: border-box;  
+  font-family: "Lato",sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  //height: 100vh;
+}
+
+.marGtop{margin-top: 1.5rem;}
+.marGleft{margin-left: 2.5rem;}
+
+.card {
+  margin-top: 3rem;
+  //margin-bottom: 50rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  //padding: 1.5rem 2.5rem;
+  //padding-bottom: 1.5rem;
+  width: 45rem;
+  //height: 0%;
+  background-color: white;
+  overflow: hidden;
+
+  &__heading {
+    font-weight: 300;
+    color: #455963;
+  }
+
+  &__sub-heading {
+    margin-top: .5rem;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    color: #95a5ad;
+    font-size: 1.2rem;
+  }
+
+  &__total-tasks {
+    font-size: 1.3rem;
+  }
+
+  &__status {
+    display: flex;
+    justify-content: space-evenly;
+    width: 40%;
+    transition: all .3s;
+
+    &--text {
+      cursor: pointer;
+      font-weight: 300;
+    }
+  }
+
+  &__input {
+    margin-top: 3rem;
+    padding: 0 0 1.5rem 2.5rem;
+    border: none;
+    background-color: inherit;
+    border-bottom: .5px solid rgb(222, 222, 222);
+    outline: none;
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-family: sans-serif;
+    color: rgb(133, 133, 133);
+
+    &::placeholder {
+      opacity: .2;
+
+    }
+  }
+
+  ul {
+    //margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    font-size: 1.5rem;
+    //max-height: 20rem;
+    overflow-x: hidden;
+    //overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #d6e2eb #ecf7fe;
+    transition: all 3s;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #888;
+    }
+
+    ul::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    li {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      font-weight: 300;
+      color: #455963;
+      font-family: sans-serif;
+      padding: 1rem 0 1.5rem 3rem;
+      //animation: moveLeft .5s cubic-bezier(.87,-.41,.19,1.44);;
+      transition: background-color .3s;
+
+      &:not(:last-child) {
+        border-bottom: .1px solid rgb(236, 236, 236);
+        //padding: 1rem 0 1.5rem 3rem;
+      }
+
+      &:hover {
+        background-color: #f6fbff;
+      }
+
+      &:hover .menu:after{
+        opacity: 1;
+      }
+
+      &:hover .delete{
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.animateClass {
+  animation: moveLeft .5s cubic-bezier(.87,-.41,.19,1.44);
+}
+
+.animateClassReverse {
+  animation: moveLeft .5s cubic-bezier(.87,-.41,.19,1.44) reverse;
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes moveTop {
+  0% {
+    position: absolute;
+    z-index: 5;
+    transform: translateY(0%);
+  }
+  100% {
+    position: absolute;
+    transform: translateY(-100%);
+  }
+}
+
+.moving-element {
+  animation: moveTop 0.5s ease;
+}
+
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  //font-size: 14px;
+}
+
+.checkmark {
+  position: absolute;
+  top: 45%;
+  left: 0%;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  transform: translate(-50%, -50%);
+  transition: all .2s;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  top: 47%;
+  left: 25%;
+  width: .6rem;
+  height: 1.2rem;
+  border: solid white;
+  border-width: 0 .2rem .2rem 0;
+  transform: rotate(45deg) translate(-50%, -50%);
+  transition: all .2s;
+}
+
+.checkbox-container input[type="checkbox"] {
+  visibility: hidden;
+  margin-right: .7rem;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background-color: #4acea3;
+  border-color: #38bb90;
+  &:after {
+    display: block;
+  }
+}
+
+.menu:after {
+  content: '\2807';
+  opacity: 0;
+  font-size: 1.6rem;
+  position: absolute;
+  color: rgb(180, 180, 180);
+  cursor: pointer;
+  right: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity .2s;
+}
+
+.whiteDiv {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  height: 40rem;
+  width: 65rem;
+  transform: translate(-50%, -50%) scaleY(0);
+  background-color: #fff;
+  border-radius: 1.5rem;
+  transition: all .3s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__info {
+    display: flex;
+    //background-color: pink;
+    width: 80%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3rem;
+    
+    h2 {
+      font-weight: 300;
+      font-size: 2rem;
+    }
+
+    input {
+      border: none;
+      border-bottom: 1px solid rgb(188, 188, 188);
+      outline: none;
+      height: 90%;
+      width: 70%;
+      border-radius: 3px;
+      font-size: 1.6rem;
+      padding: 1rem;
+
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    //background-color: pink;
+    padding: 1.5rem 2.5rem;
+  }
+
+  .btn {
+    outline: none;
+    border: none;
+    padding: 1rem 2rem;
+    color: white;
+    border-radius: 15rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  &__cancel {
+    background-color: rgb(205, 194, 194);
+  }
+
+  &__save {
+    background-color: #38bb90;
+    margin-left: 2rem;
+  }
+}
+
+.whiteDiv.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.whiteDivBackground {
+  display: none;
+  position: fixed;
+  opacity: .7;
+  //opacity: 1;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(96, 212, 204);
+  transition: all .3s;
+}
+
+.smallDiv {
+  display: none;
+  position: absolute;
+  width: 13rem;
+  background-image: linear-gradient(to right bottom, rgb(214, 246, 255), rgb(255, 203, 211));
+  border-radius: 15px;
+  transition: all .3s;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style: none;
+    padding: 1rem 0;
+    font-size: 1.6rem;
+
+    li {
+      padding-left: 1.5rem;
+      transition: all .3s;
+      color: rgb(51, 51, 51);
+      
+      &:not(:last-child){
+        margin-bottom: .3rem;
+        //border-bottom: 1px solid rgb(255, 173, 187);
+      }
+
+      &:hover {
+        cursor: pointer;
+        //background-image: linear-gradient(to right bottom, rgb(175, 238, 255), rgb(255, 152, 168));
+        color: white;
+      }
+    }
+  }
+}
+
+.delete {
+  opacity: 0;
+  position: absolute;
+  font-size: 1rem;
+  top: 50%;
+  right: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  color: rgb(255, 86, 86);
+  outline: 1.3px solid rgb(255, 86, 86);
+  //background-color: pink;
+  border-radius: 100%;
+  padding: 0rem .5rem;
+  z-index: 3;
+  transition: all .2s;
+
+  &:hover {
+    background-color: pink;
+    color: white;
+  }
+}
+
+.activeSub {
+  background-color: #a6b5bc; /* Set the desired color for the active element */
+  padding: 0 .8rem;
+  border-radius: 15rem;
+  color: white;
+  transition: all .3s;
+}
