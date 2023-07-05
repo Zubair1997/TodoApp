@@ -37,47 +37,28 @@ function columnSort() {
           const notesContainerCount = $(this).children().length;
           Bcount = notesContainerCount - 1;
         });
-        locations[ulId].sort();
-        if (Array.isArray(locations[ulId][1])) {
-          locations[ulId][1].sort();
-          //locations[ulId][2].sort();
-        } 
+        //locations[ulId].sort();
+        // if (Array.isArray(locations[ulId][1])) {
+        //   locations[ulId][1].sort();
+        // } 
         let sort = 0;
         let indexValue = newItemIndex;
         for (const ulId in locations) {
           const location = locations[ulId];
           //console.log(location);
-          if(location[2] == hasClass ){
-            if(location[1] < newItemIndex) {
-              location[1] = sort++;
-            }else if(location[1] > newItemIndex){
-              location[1] = 2 + sort++;
-            }else if(location[1] == newItemIndex){
+          if(location.Class == hasClass ){
+            if(location.columnIndex < newItemIndex) {
+              location.columnIndex = sort++;
+            }else if(location.columnIndex > newItemIndex){
+              location.columnIndex = 2 + sort++;
+            }else if(location.columnIndex == newItemIndex){
               indexValue = newItemIndex + 1;
               sort--;
             }
           }
         }    
-        // const totalElements = column.find(".card").length;
-        // let changeValue = 0;
-        // for (const ulId in locations) {
-        //   const location = locations[ulId];
-        //   if(location[2] == hasClass) {
-        //     if(location[1] >= newItemIndex){
-        //       let count = location[1]
-        //       location[1] = ++count;
-        //     }
-        //     // && location[1] < totalElements-1  
-        //     // }else if(location[1] >= totalElements-1){
-        //     //   console.log("ELSE");
-        //     //   location[1] = changeValue++;
-        //     // }
-        //   }
-        // }
-        
-        locations[ulId][0] = displayTextId;
-        locations[ulId][1] = indexValue;
-        locations[ulId][2] = hasClass;
+        let locateObj = locationObjectCreate(displayTextId, ulId, indexValue, hasClass)
+        locations[ulId] = locateObj;
         console.log(locations);
         //console.log(displayTextId + " " + ulId + " " + newItemIndex + " " + hasClass);
       }else{
@@ -89,8 +70,8 @@ function columnSort() {
 
 
 function displayName(ulId, name) {
-  //console.log(ulId);
-  locations[ulId][0] = name;
+  locations[ulId].TodoName = name;
+  console.log(pages);
 }
 
 function onSort(ulId) {

@@ -51,12 +51,13 @@ body {
   line-height: 1.7;
 
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding-left: 6.5rem;
+  //flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
   
   //height: 100%;
-  width: 100vw;
+  //width: 100vw;
 }
 
 .marGtop{margin-top: 1.5rem;}
@@ -547,7 +548,7 @@ body {
   width: 7rem;
   border-radius: 100%;
   background-image: linear-gradient(to right bottom, rgb(255, 207, 117), rgb(255, 255, 110));
-  transform: scale(0.95);
+  //transform: scale(0.95);
 
   &::after {
     content: "+";
@@ -559,6 +560,13 @@ body {
     color: white;
     font-size: 5.5rem;
     font-weight: 300;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    &::after {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
   }
 }
 
@@ -596,5 +604,191 @@ body {
   }
   100% {
     opacity: 0;
+  }
+}
+
+.myCheckbox {
+  position: absolute;
+  visibility: hidden;
+
+  &:checked ~ .navigation__details {
+      width: 110%;
+  }
+
+  &:checked ~ .myCheckbox-label .hamburger{
+      .line1 {
+          transform: rotate(45deg) translate(7px, 5px);
+        }
+        
+      .line2 {
+        opacity: 0;
+      }
+      
+      .line3 {
+        transform: rotate(-48deg) translate(7px, -5px);
+      }
+  }
+
+  &:checked ~ .navigation__details {
+
+      .navigation__main {
+          opacity: 1;
+      }
+
+      .navigation__sub {
+          opacity: 1;
+      }
+  }
+}
+
+.hamburger {
+  position: absolute;
+  left: 1.5rem;
+  top: 2.3rem;
+  z-index: 101;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.line {
+  width: 100%;
+  height: 3px;
+  background-color: rgb(231, 241, 245);
+  transition: transform 0.3s ease;
+}
+
+.navigation {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 11%;
+  height: 100%;
+
+  &__details{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 37%;
+      height: 100%;
+      background-color: rgb(136, 181, 197);
+      padding: 0 1rem;
+      padding-top: 7rem;
+      transition: all .333s;
+  }
+
+  &__main {
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      opacity: 0;
+      width: 100%;
+      padding: 2rem 1rem;
+      //height: 63%;
+      background-color: rgb(223, 230, 233);
+      border-radius: 15px;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+      transition: all .333s;
+
+      h2 {
+        margin-bottom: 1.6rem;
+        font-size: 2rem;
+        font-weight: 300;
+        color: rgb(63, 85, 93);
+      }
+
+      &--input {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid rgb(165, 165, 165);
+        font-size: 1.8rem;
+        width: 100%;
+        padding-left: .5rem;
+        padding-bottom: .5rem;
+        color: rgb(105, 117, 121);
+        margin-right: -3rem;
+      }
+
+      button {
+        cursor: pointer;
+        background-color: transparent;
+        font-weight: 300;
+        border: none;
+        font-size: 2.3rem;
+        color: rgb(113, 121, 124);
+        margin-top: -1rem;
+      }
+  }
+
+  &__sub {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    opacity: 0;
+    width: 100%;
+    padding: 2rem 1rem;
+    background-color: rgb(223, 230, 233);
+    border-radius: 15px;
+    margin: 0 auto;
+    transition: all .333s;
+
+    h3 {
+      margin-bottom: 1.3rem;
+      font-size: 2rem;
+      font-weight: 300;
+      color: rgb(63, 85, 93);
+    }
+  }
+
+  &__list {
+
+    &--item {
+      display: flex;
+      align-items: center;
+
+      &:not(:last-of-type) {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    &--input {
+      position: relative;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      margin-left: .15rem;
+      font-size: 1.8rem;
+      width: 90%;
+      color: rgb(114, 124, 128);
+      transition: all .3s;
+
+      &:hover ~ .navigation__list--button {
+        opacity: 1;
+      }
+    }
+
+    &--button {
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      color: #a6b0b5;
+      opacity: 0;
+      transition: all .3s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }

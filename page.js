@@ -1,32 +1,83 @@
 let tasks = {};
 let locations = {}; //TodoName Column-Index Column-Name
 let pages = {};
-// const data = {
-//     default: [],
-//     locations: [
-//       ["A", 0, "A"],
-//       ["B", 1, "B"],
-//       ["C", 0, "C"],
-//       ["D", 1, "B"]
-//     ],
-//     tasks: [
-//       [
-//         { id: "A1uFQVXn", name: "b1", status: "active", ... },
-//         { id: "nQylcSvr", name: "b2", status: "active", ... }
-//       ],
-//       [
-//         { id: "8suqKrcF", name: "c2", status: "active", ... },
-//         { id: "HWlaBw3Z", name: "c1", status: "active", ... }
-//       ],
-//       []
-//     ]
-//   };
+let pageName = "default";
+
+
+const data = [
+    {
+      default: [],
+      Locations: {
+        qluI9List: {
+          ulId: "qluI9List",
+          TodoName: "B",
+          columnIndex: 2,
+          Class: "B"
+        },
+        CRu2List: {
+          ulId: "CRu2List",
+          TodoName: "A",
+          columnIndex: 0,
+          Class: "A"
+        }
+      },
+      Tasks: {
+        qluI9List: [
+          {
+            id: "gjxmt28M",
+            name: "b2",
+            ulId: "qluI9List",
+            date: "5/7/2023",
+            status: "active"
+          },
+          {
+            id: "EDzonSCH",
+            name: "b1",
+            ulId: "qluI9List",
+            date: "5/7/2023",
+            status: "active"
+          }
+        ],
+        CRu2List: [
+          {
+            id: "uah1EhOF",
+            name: "a1",
+            ulId: "CRu2List",
+            date: "5/7/2023",
+            status: "active"
+          },
+          {
+            id: "1AmgPKSj",
+            name: "a2",
+            ulId: "CRu2List",
+            date: "5/7/2023",
+            status: "active"
+          },
+          {
+            id: "KjnZqyuU",
+            name: "a3",
+            ulId: "CRu2List",
+            date: "5/7/2023",
+            status: "completed"
+          }
+        ]
+      }
+    }
+  ];
+  
+  
+  
+
+
+
 $(document).ready(function() {
-    // 1) When card delete remove tasks & location in array
-    // 2) Insert ulId in location
-    pages["default"] = [];
-    pages["default"]["tasks"] = [];
-    pages["default"]["locations"] = [];
+    // 1) Create auto add data for Pages function.
+    // 2) Create Nav bar and function.
+    pages[pageName] = [];
+    pages[pageName]["Locations"] = locations;
+    pages[pageName]["Tasks"] = tasks;
+    //pages[pageName]["tasks"] = [];
+    //pages[pageName]["locations"] = [];
     const createBtnEl = $(".createBtn");
     
     createBtnEl.on("click", function() {
@@ -42,10 +93,15 @@ $(document).ready(function() {
       let removecard = id+"removecard";
       tasks[ulId] = [];
       locations[ulId] = [];
-      //packBoth["default"].push(tasks[ulId]);
-      //packBoth["default"].push(locations[ulId]);
-      pages["default"]["tasks"].push(tasks[ulId]);
-      pages["default"]["locations"].push(locations[ulId]);
+      if ("tasks" in pages[pageName]) {
+        //console.log("tasks property exists in pages[" + pageName + "]");
+      } else {
+        console.log("tasks property does not exist in pages[" + pageName + "]");
+        //pages[pageName]["tasks"] = [];
+        //pages[pageName]["locations"] = []
+      }
+      //pages[pageName]["tasks"].push(tasks[ulId]);
+      //pages[pageName]["locations"].push(locations[ulId]);
       //---  ID End
       const cardEl = $("<div>").addClass("card").css("height", "5%").attr("id", id);
       const headEl = $("<div>").addClass("card__head");
@@ -82,7 +138,8 @@ $(document).ready(function() {
         $("#" + id).addClass('animateRemoveCard').delay(250).queue(function(next) {
           delete locations[ulId];
           delete tasks[ulId];
-          pages["default"]["locations"] = locations;
+          //pages[pageName]["locations"] = locations;
+          //pages[pageName]["tasks"] = tasks;
           $("#" + id).remove();
           next();
         });
@@ -90,11 +147,14 @@ $(document).ready(function() {
 
       //$(".card__heading").text(getDate());
       $("#" + displayTextId).val("Todo Task");
-      locations[ulId].push($("#" + displayTextId).val());
+      //locations[ulId].push($("#" + displayTextId).val());
       Bcount++;
-      locations[ulId].push(Bcount);
-      locations[ulId].push("B");
-      //console.log(locations);
+      //locations[ulId].push(Bcount);
+      //locations[ulId].push("B");
+      let locateObj = locationObjectCreate($("#" + displayTextId).val(), ulId, Bcount, "B")
+      locations[ulId] = locateObj;
+      //pages[pageName]["locations"] = locations;
+      console.log(pages);
 
       $("#"+inputId).on("keydown", function(event) {
         if (event.keyCode === 13 && $(this).val() !== "") {
@@ -102,6 +162,7 @@ $(document).ready(function() {
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
           tasks[ulId].unshift(objectTask);
+          //pages[pageName]["tasks"] = tasks;
           console.log(pages);
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
           $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);

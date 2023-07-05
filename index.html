@@ -23,16 +23,42 @@
 </head>
 <body>
 
-  <!-- <div class="top">
-    <h1>Notes App</h1>
-    <button class="createBtn">Create</button>
-  </div> -->
-
   <div class="button-bottom createBtn">
-    <!-- <button class="createBtn"></button> -->
   </div>
 
-  <!-- <div id="sortable" class="notesContainer"> </div> -->
+  <nav class="navigation">
+    <input type="checkbox" id="myCheckbox" class="myCheckbox" name="myCheckbox" value="checkboxValue">
+    <label for="myCheckbox" class="myCheckbox-label">
+        <div class="hamburger">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+          </div>                      
+    </label>
+    <div class="navigation__details">
+        <div class="navigation__main">
+          <h2>Create Page</h2>
+          <div class="navigation__main--input">
+            <input type="text" maxlength="12">
+            <button>+</button>
+          </div>
+        </div>
+        <div class="navigation__sub">
+          <h3>Page Names</h3>
+          <div class="navigation__list">
+            <div class="navigation__list--item">
+              <input class="navigation__list--input" type="text" value="Default">
+              <button class="navigation__list--button" ><i class="fa fa-remove"></i></button>
+            </div>
+            <div class="navigation__list--item">
+              <input class="navigation__list--input" type="text" value="Gym">
+              <button class="navigation__list--button" ><i class="fa fa-remove"></i></button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </nav>  
+
   <div class="column-div">
     <div class="column A"> </div>
     <div class="column notesContainer B">
@@ -62,21 +88,6 @@
     </div>
     <div class="column C"> </div>
   </div>
-  
-  <!-- <div class="card">
-    <h1 class="card__heading marGtop marGleft">Tue Jun 20 2023</h1>
-    <div class="card__sub-heading marGleft">
-      <div class="card__total-tasks"><span id="task-count">4</span> tasks</div>
-      <div class="card__status ">
-        <h3 class="card__status--text activeSub">All</h3>
-        <h3 class="card__status--text">Active</h3>
-        <h3 class="card__status--text">Completed</h3>
-      </div>
-    </div>
-    <input placeholder="Add a new task..." type="text" class="card__input">
-    <ul id="list" class="">
-    </ul>
-  </div>-->
   <div id="smallDiv" class="smallDiv">
   </div>
   <div class="whiteDivBackground"></div>

@@ -65,7 +65,7 @@ function getItemById(itemId) {
   var taskName = $item.find(".checkbox-container").text().trim();
   //var checkboxId = $item.find("input[type='checkbox']").attr("id");
   var taskId = $item.find("span").attr("id");
-  console.log(taskId);
+  //console.log(taskId);
 
   var item = {
     liID: itemId,
@@ -78,7 +78,7 @@ function getItemById(itemId) {
 }
 
 function addTask(task, animation = null, ulId, card__totaltasks) {
-  console.log(tasks);
+  //console.log(tasks);
   var liID = generateRandomId(5);
   var checkboxid = liID + "Checkbox";
   var menuID = liID + "Menu";
@@ -304,7 +304,7 @@ function closeAboveDiv() {
 }
   
 function changeBackground(checkboxId, liID, taskId, ulId) {
-  console.log(tasks[ulId]);
+  //console.log(tasks[ulId]);
   var checkbox = $("#" + checkboxId)[0];
   var listItem = $("#" + liID);
   //Status for checking if task.status == completed/active then do not reposition/change array
@@ -389,6 +389,16 @@ function changeBackground(checkboxId, liID, taskId, ulId) {
       //console.log(tasks);
     }
   }
+}
+
+function locationObjectCreate(name, ulId, indexValue, hasClass) {
+  const locationObject = {
+    ulId: ulId,
+    TodoName: name,
+    columnIndex: indexValue,
+    Class: hasClass
+  };
+  return locationObject;
 }
 
 function taskObjectCreate(name, ulId=null) {
