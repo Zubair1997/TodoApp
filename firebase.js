@@ -10,7 +10,7 @@
 
 //////////////////////////////////////////////////
 let first = true;
-let Bcount = -1;
+let Bcount = -1;  //how much card in column B
 function columnSort() {
   $(".column").sortable({
     connectWith: ".column",

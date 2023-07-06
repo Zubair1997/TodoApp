@@ -613,6 +613,7 @@ body {
 
   &:checked ~ .navigation__details {
       width: 110%;
+      z-index: 100;
   }
 
   &:checked ~ .myCheckbox-label .hamburger{
@@ -662,12 +663,12 @@ body {
 }
 
 .navigation {
-  z-index: 100;
   position: absolute;
   left: 0;
   top: 0;
   width: 11%;
   height: 100%;
+  transition: all .333s;
 
   &__details{
       position: absolute;
@@ -737,7 +738,7 @@ body {
     align-self: center;
     opacity: 0;
     width: 100%;
-    padding: 2rem 1rem;
+    padding: 2rem 0rem;
     background-color: rgb(223, 230, 233);
     border-radius: 15px;
     margin: 0 auto;
@@ -748,6 +749,7 @@ body {
       font-size: 2rem;
       font-weight: 300;
       color: rgb(63, 85, 93);
+      margin-left: 1rem;
     }
   }
 
@@ -756,9 +758,10 @@ body {
     &--item {
       display: flex;
       align-items: center;
+      //padding-left: 1rem;
 
       &:not(:last-of-type) {
-        margin-bottom: 1.5rem;
+        margin-bottom: .5rem;
       }
     }
 
@@ -767,10 +770,10 @@ body {
       background-color: transparent;
       border: none;
       outline: none;
-      margin-left: .15rem;
       font-size: 1.8rem;
-      width: 90%;
+      width: 100%;
       color: rgb(114, 124, 128);
+      padding: .3rem 1rem;
       transition: all .3s;
 
       &:hover ~ .navigation__list--button {
@@ -784,11 +787,20 @@ body {
       border: none;
       color: #a6b0b5;
       opacity: 0;
+      margin-left: -1.5rem;
       transition: all .3s;
+      z-index: 200;
 
       &:hover {
         opacity: 1;
       }
     }
   }
+}
+
+.active {
+  background-color: #b8d0da;
+  width: 100%;
+  padding: .2rem .5rem;
+  border-radius: 3px;
 }
