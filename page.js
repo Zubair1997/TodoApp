@@ -3,61 +3,15 @@ let locations = {}; //TodoName Column-Index Column-Name
 let pages = {};
 let pageName = "default";
 
-const data = {
-  default: [{
-    Locations: {
-      qluI9List: {
-        ulId: "qluI9List",
-        TodoName: "A",
-        columnIndex: 2,
-        Class: "A"
-      },
-      CRu2List: {
-        ulId: "CRu2List",
-        TodoName: "B",
-        columnIndex: 0,
-        Class: "B"
-      }
-    },
-    Tasks: {
-      qluI9List:[
-      {
-        id: '2srg4t6y',
-        name: 'a1',
-        status: 'active',
-        ulId: 'qluI9List'
-      },
-      {
-        id: 'OeEZKkSN',
-        name: 'a2',
-        status: 'active',
-        ulId: 'qluI9List'
-      }],
-      CRu2List:[
-        {
-          id: '2srg4t6y',
-          name: 'b1',
-          status: 'active',
-          ulId: 'CRu2List'
-        },
-        {
-          id: 'OeEZKkSN',
-          name: 'b2',
-          status: 'active',
-          ulId: 'CRu2List'
-      }]
-    } 
-  }]
-};
-
 
 $(document).ready(function() {
-    autoLoadPage();
+    //Add Card ID in LOcations/Tasks
+    //Implement remove function
     pages[pageName] = [];
     pages[pageName]["Locations"] = locations;
     pages[pageName]["Tasks"] = tasks;
-    //pages[pageName]["tasks"] = [];
-    //pages[pageName]["locations"] = [];
+    autoLoadPage("default");
+    console.log(pages);
     const createBtnEl = $(".createBtn");
     
     createBtnEl.on("click", function() {
@@ -177,9 +131,48 @@ $(document).ready(function() {
 
     $('.navigation__list').on('click', '.navigation__list--item', function() {
       $('.navigation__list--item').removeClass('active');
+      let clickedPage = $(this).find('.navigation__list--input').val();
+      clickedPage = clickedPage.toLowerCase();
       $(this).addClass('active');
+      if(clickedPage != pageName) {
+        pageName = clickedPage;
+        removeAllCard();
+        if (pages.hasOwnProperty(clickedPage)) {
+          console.log("IF exist");
+          task = pages[clickedPage]["Tasks"];
+          locations = pages[clickedPage]["Locations"];
+
+          pages[clickedPage] = {}; // Initialize as an object
+          pages[clickedPage]["Locations"] = locations;
+          pages[clickedPage]["Tasks"] = task;
+          
+          console.log("Loop " + clickedPage);
+          // const cardElement = $(".card");
+          // for (const loc in pages[clickedPage]["Locations"]) {
+          //   cardElement.find("ul#" + loc).removeAttr("id");
+          //   console.log(loc);
+          // }
+          autoLoadPage(clickedPage);
+        } else {
+          console.log("ELSE NotExist");
+          tasks = [];
+          locations = [];
+
+          pages[clickedPage] = {};
+          pages[clickedPage]["Locations"] = locations;
+          pages[clickedPage]["Tasks"] = tasks;
+        }
+
+        //console.log(pages);
+      }
     });
 });
+
+function removeAllCard() {
+  $(".A").empty();
+  $(".B").empty();
+  $(".C").empty();
+}
 
 
 function pageAdd(inputValue, pageId) {
@@ -190,25 +183,26 @@ function pageAdd(inputValue, pageId) {
     );
 
   $('.navigation__list').append(newItem);
+  console.log(inputValue);
+  //pages[inputValue]["Locations"] = locations;
+  //pages[inputValue]["Tasks"] = tasks;
   $('.navigation__main--input').val('');
 }
 
-function autoLoadPage() {
-  let location = data.default[0].Locations  //Locations => Class, TodoName, columnIndex, ulId
-  let task = data.default[0].Tasks  //Tasks => id: '2srg4t6y', name: 'a1', status: 'active', ulId: 'qluI9List'      
+function autoLoadPage(page) {
+  console.log("autoLoadPage "+ page);
+  let location = pages[page]["Locations"];  //Locations => Class, TodoName, columnIndex, ulId
+  let task = pages[page]["Tasks"]  //Tasks => id: '2srg4t6y', name: 'a1', status: 'active', ulId: 'qluI9List'      
   for(loc in location) {
     createCard(location[loc].Class, location[loc].TodoName, location[loc].columnIndex, location[loc].ulId, location[loc].taskName, location[loc].status);
   }
 
   for(tas in task) {
-    //console.log(task[tas]);
     for(i in task[tas]) {
       console.log(task[tas][i].name);
       let objectTask = taskObjectCreate(task[tas][i].name, task[tas][i].ulId);
-      //---------------
-      tasks[task[tas][i].ulId].unshift(objectTask);
-      //console.log(pages);
-      let taskWord = (tasks[task[tas][i].ulId].length <= 1) ? " Task" : " Tasks";
+      //tasks[task[tas][i].ulId].unshift(objectTask);
+      let taskWord = (task[task[tas][i].ulId].length <= 1) ? " Task" : " Tasks";
       $("#card__totaltasks").text(tasks[task[tas][i].ulId].length + taskWord);
       addTask(objectTask, "animateClass", task[tas][i].ulId, 'card__totaltasks');
     }
@@ -257,6 +251,10 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
       subHeadingEl.append(statusEl);
       headEl.append(headingInputEl, heading2El);
       cardEl.append(headEl, subHeadingEl, inputEl, listEl);
+
+      headingInputEl.change(function() {
+        displayName(ulId, $(this).val())
+      });
   
       $("."+Class).append(cardEl);
       if(Class == "B"){
@@ -282,7 +280,7 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
           tasks[ulId].unshift(objectTask);
-          console.log(pages);
+          //console.log(pages);
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
           $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
           addTask(objectTask, "animateClass", ulId, card__totaltasks);

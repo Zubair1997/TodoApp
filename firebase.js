@@ -1,14 +1,3 @@
-// let tasks = [
-//     { id: "A", name: "Morning Walk", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" },
-//     { id: "AB", name: "Book Flight to Hungary", order: 0, status: 'active', date: "22/6/2023", duedate: "22/6/2023" }
-//   ];
-
-  
-
-
-
-
-//////////////////////////////////////////////////
 let first = true;
 let Bcount = -1;  //how much card in column B
 function columnSort() {
@@ -37,10 +26,6 @@ function columnSort() {
           const notesContainerCount = $(this).children().length;
           Bcount = notesContainerCount - 1;
         });
-        //locations[ulId].sort();
-        // if (Array.isArray(locations[ulId][1])) {
-        //   locations[ulId][1].sort();
-        // } 
         let sort = 0;
         let indexValue = newItemIndex;
         for (const ulId in locations) {
@@ -103,20 +88,4 @@ function onSort(ulId) {
         CalladdTaskHandler()
       }
     });
-}
-  
-// const cardEl = $("<div>").addClass("card").css("height", "5%");
-      // const headingEl = $("<h1>").addClass("card__heading marGtop marGleft").text("Tue Jun 20 2023");
-      // const subHeadingEl = $("<div>").addClass("card__sub-heading marGleft");
-      // const totalTasksEl = $("<div>").addClass("card__total-tasks").attr("id", card__totaltasks).html("<span id=\"task-count\">0</span> tasks");
-      // const statusEl = $("<div>").addClass("card__status")
-      // const allStatusEl = $("<h3>").addClass("card__status--text activeSub").attr("id", card__statusAll).text("All");
-      // const activeStatusEl = $("<h3>").addClass("card__status--text").attr("id", card__statusActive).text("Active");
-      // const completedStatusEl = $("<h3>").addClass("card__status--text").attr("id", card__statusComplete).text("Completed");
-      // const inputEl = $("<input>").attr("type", "text").attr("id", inputId).addClass("card__input").attr("placeholder", "Add a new task...");
-      // const listEl = $("<ul>").attr("id", ulId);
-  
-      // subHeadingEl.append(totalTasksEl);
-      // statusEl.append(allStatusEl, activeStatusEl, completedStatusEl);
-      // subHeadingEl.append(statusEl);
-      // cardEl.append(headingEl, subHeadingEl, inputEl, listEl);  
+} 
