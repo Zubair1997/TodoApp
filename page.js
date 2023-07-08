@@ -1,17 +1,15 @@
 let tasks = {};
 let locations = {}; //TodoName Column-Index Column-Name
 let pages = {};
-let pageName = "default";
+let pageName = "Default";
 
 
 $(document).ready(function() {
-    //Add Card ID in LOcations/Tasks
-    //Implement remove function
     pages[pageName] = [];
     pages[pageName]["Locations"] = locations;
     pages[pageName]["Tasks"] = tasks;
-    autoLoadPage("default");
-    console.log(pages);
+    autoLoadPage("Default");
+    //console.log(pages);
     const createBtnEl = $(".createBtn");
     
     createBtnEl.on("click", function() {
@@ -86,7 +84,7 @@ $(document).ready(function() {
       let locateObj = locationObjectCreate($("#" + displayTextId).val(), ulId, Bcount, "B")
       locations[ulId] = locateObj;
       //pages[pageName]["locations"] = locations;
-      console.log(pages);
+      //console.log(pages);
 
       $("#"+inputId).on("keydown", function(event) {
         if (event.keyCode === 13 && $(this).val() !== "") {
@@ -95,7 +93,7 @@ $(document).ready(function() {
           $(".card__input").val("");
           tasks[ulId].unshift(objectTask);
           //pages[pageName]["tasks"] = tasks;
-          console.log(pages);
+          //console.log(pages);
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
           $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
           addTask(objectTask, "animateClass", ulId, card__totaltasks);
@@ -113,6 +111,7 @@ $(document).ready(function() {
     //Page Add navigation__list--button
     let pageId = generateRandomId(5) + "Default";
     pageAdd("Default", pageId)
+    //pageName = "Default";
     $("#"+pageId).addClass("active");
     
     $('.navigation__main--button').click(function() {
@@ -123,38 +122,41 @@ $(document).ready(function() {
       }
     });
 
+    //add page
     $(".navigation__main--input").on("keydown", function(event) {
       if (event.keyCode === 13 && $(this).val() !== "") {
-        pageAdd($(this).val())
+        let pageId = generateRandomId(5) + $(this).val();
+        pageAdd($(this).val(), pageId)
       }
     })
 
+    //change page
+    $(".navigation__list").on("keydown", ".navigation__list--input", function(event) {
+      let changeName = $(this).val();
+      if (event.keyCode === 13 && pageName !== changeName) {
+        pages[changeName] = pages[pageName];
+        delete pages[pageName];
+        pageName = changeName;
+        console.log(pages);
+      }
+    });
+
     $('.navigation__list').on('click', '.navigation__list--item', function() {
+      console.log(pages);
       $('.navigation__list--item').removeClass('active');
       let clickedPage = $(this).find('.navigation__list--input').val();
-      clickedPage = clickedPage.toLowerCase();
+      //clickedPage = clickedPage.toLowerCase();
       $(this).addClass('active');
       if(clickedPage != pageName) {
         pageName = clickedPage;
         removeAllCard();
         if (pages.hasOwnProperty(clickedPage)) {
-          console.log("IF exist");
-          task = pages[clickedPage]["Tasks"];
+          //console.log("IF exist");
           locations = pages[clickedPage]["Locations"];
-
-          pages[clickedPage] = {}; // Initialize as an object
-          pages[clickedPage]["Locations"] = locations;
-          pages[clickedPage]["Tasks"] = task;
-          
-          console.log("Loop " + clickedPage);
-          // const cardElement = $(".card");
-          // for (const loc in pages[clickedPage]["Locations"]) {
-          //   cardElement.find("ul#" + loc).removeAttr("id");
-          //   console.log(loc);
-          // }
+          tasks = pages[clickedPage]["Tasks"];
           autoLoadPage(clickedPage);
         } else {
-          console.log("ELSE NotExist");
+          //console.log("ELSE NotExist");
           tasks = [];
           locations = [];
 
@@ -162,8 +164,6 @@ $(document).ready(function() {
           pages[clickedPage]["Locations"] = locations;
           pages[clickedPage]["Tasks"] = tasks;
         }
-
-        //console.log(pages);
       }
     });
 });
@@ -183,14 +183,11 @@ function pageAdd(inputValue, pageId) {
     );
 
   $('.navigation__list').append(newItem);
-  console.log(inputValue);
-  //pages[inputValue]["Locations"] = locations;
-  //pages[inputValue]["Tasks"] = tasks;
   $('.navigation__main--input').val('');
 }
 
 function autoLoadPage(page) {
-  console.log("autoLoadPage "+ page);
+  //console.log("autoLoadPage "+ page);
   let location = pages[page]["Locations"];  //Locations => Class, TodoName, columnIndex, ulId
   let task = pages[page]["Tasks"]  //Tasks => id: '2srg4t6y', name: 'a1', status: 'active', ulId: 'qluI9List'      
   for(loc in location) {
@@ -199,7 +196,7 @@ function autoLoadPage(page) {
 
   for(tas in task) {
     for(i in task[tas]) {
-      console.log(task[tas][i].name);
+      //console.log(task[tas][i].name);
       let objectTask = taskObjectCreate(task[tas][i].name, task[tas][i].ulId);
       //tasks[task[tas][i].ulId].unshift(objectTask);
       let taskWord = (task[task[tas][i].ulId].length <= 1) ? " Task" : " Tasks";
@@ -221,11 +218,11 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
       
       if (tasks.hasOwnProperty(ulId)) {
         // If tasks[ulId] already exists
-        console.log("No problem, it already exists.");
+        //console.log("No problem, it already exists.");
       } else if (!tasks.hasOwnProperty(ulId)) {
         // If tasks[ulId] doesn't exist
         tasks[ulId] = [];
-        console.log("Defined tasks[ulId] as an empty array.");
+        //console.log("Defined tasks[ulId] as an empty array.");
       }
       //---  ID End
       const cardEl = $("<div>").addClass("card").css("height", "5%").attr("id", id);
@@ -272,7 +269,7 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
       $("#" + displayTextId).val(TodoName);
       let locateObj = locationObjectCreate($("#" + displayTextId).val(), ulId, Bcount, Class)
       locations[ulId] = locateObj;
-      console.log(pages);
+      //console.log(pages);
 
       $("#"+inputId).on("keydown", function(event) {
         if (event.keyCode === 13 && $(this).val() !== "") {
