@@ -59,24 +59,6 @@ const addTaskHandler = async (tasks) => {
   // }
 };
 
-function getItemById(itemId) {
-  var $item = $("#" + itemId);
-
-  var taskName = $item.find(".checkbox-container").text().trim();
-  //var checkboxId = $item.find("input[type='checkbox']").attr("id");
-  var taskId = $item.find("span").attr("id");
-  //console.log(taskId);
-
-  var item = {
-    liID: itemId,
-    taskId: taskId,
-    name: taskName,
-    //checkboxId: checkboxId
-  };
-
-  return item;
-}
-
 function addTask(task, animation = null, ulId, card__totaltasks) {
   //console.log(tasks);
   var liID = generateRandomId(5);
@@ -84,23 +66,6 @@ function addTask(task, animation = null, ulId, card__totaltasks) {
   var menuID = liID + "Menu";
   var inputId = liID + "Input";
   var labelId = liID + "Label";
-
-  // var listItem = $("<li>", { id: liID }).append(
-  //   $("<label>",  {id: labelId, class: "checkbox-container" }).append(
-  //     $("<input>", {
-  //       id: checkboxid,
-  //       onclick: `changeBackground('${checkboxid}', '${liID}', '${task.id}', '${ulId}')`,
-  //       type: "checkbox"
-  //     }),
-  //     $("<span>", { class: "checkmark", id: task.id }),
-  //      task.name
-  //   ),
-  //   $("<div>", {
-  //     id: menuID,
-  //     onclick: `onSmallDiv('${menuID}', '${task.id}', '${liID}', '${labelId}', '${ulId}', '${card__totaltasks}')`,
-  //     class: "menu"
-  //   })
-  // );
 
   var listItem = $("<li>", { id: liID }).append(
     $("<label>", { id: labelId, class: "checkbox-container" }).append(
@@ -126,7 +91,7 @@ function addTask(task, animation = null, ulId, card__totaltasks) {
   if (animation === null) {
     $("#"+ulId).append(listItem);
   } else {
-    $("#"+ulId).prepend(listItem);
+    $("#"+ulId).append(listItem);
     CalladdTaskHandler()
   }
 
@@ -338,7 +303,7 @@ function changeBackground(checkboxId, liID, taskId, ulId) {
         const element = tasks[ulId].splice(index, 1)[0];
         let lastCompleteIndex = -1;
         for (let i = tasks[ulId].length - 1; i >= 0; i--) {
-          if (tasks[ulId][i].status === 'completed') {
+          if (tasks[ulId][i].status === 'completed') {  //Shifting just above checked list
             lastCompleteIndex = i;
           } else {
             break;
@@ -357,6 +322,7 @@ function changeBackground(checkboxId, liID, taskId, ulId) {
       //console.log(tasks);
     }
   } else {
+    //Removing from checked and moving to top
     $.each(tasks[ulId], function(index, task) {
       if (task.id === taskId && task.status != "active") {
         beforeStatus = "completed"
@@ -401,13 +367,13 @@ function locationObjectCreate(name, ulId, indexValue, hasClass) {
   return locationObject;
 }
 
-function taskObjectCreate(name, ulId=null) {
+function taskObjectCreate(name, ulId=null, status='active') {
   const currentDate = new Date();
   const taskObject = {
     id: generateRandomId(8),
     name: '',
     ulId: ulId,
-    status: 'active',
+    status: status,
     date: currentDate.toLocaleDateString(),
     // duedate: currentDate.toLocaleDateString(),
     //subTasks: [taskObjectCreate]

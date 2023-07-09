@@ -66,9 +66,8 @@ function onSort(ulId) {
       ghostClass: 'blue-background-class',
       onEnd: function (event) {
         var newOrder = Array.from(event.target.children).map(function (listItem) {
-          return listItem.getAttribute("id");
+          return listItem.getAttribute("id"); //list-item ID
         });
-  
         console.log('New order:', newOrder);
         // Save the new order or perform any necessary actions
   
@@ -84,8 +83,25 @@ function onSort(ulId) {
           return aIndex - bIndex;
         });
         
+        //pages[pageName]["Tasks"] = tasks;
         console.log(tasks);
+        console.log(pages);
         CalladdTaskHandler()
       }
     });
 } 
+
+function getItemById(itemId) {
+  var $item = $("#" + itemId);
+
+  var taskName = $item.find(".checkbox-container .list").val().trim();
+  var taskId = $item.find("span").attr("id");
+
+  var item = {
+    liID: itemId,
+    taskId: taskId,
+    name: taskName,
+  };
+
+  return item;
+}

@@ -5,11 +5,11 @@ let pageName = "Default";
 
 
 $(document).ready(function() {
+    //Implement remove pageName from pages
     pages[pageName] = [];
     pages[pageName]["Locations"] = locations;
     pages[pageName]["Tasks"] = tasks;
     autoLoadPage("Default");
-    //console.log(pages);
     const createBtnEl = $(".createBtn");
     
     createBtnEl.on("click", function() {
@@ -91,7 +91,7 @@ $(document).ready(function() {
           let taskName = $(this).val().trim();
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
-          tasks[ulId].unshift(objectTask);
+          tasks[ulId].push(objectTask);
           //pages[pageName]["tasks"] = tasks;
           //console.log(pages);
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
@@ -191,22 +191,20 @@ function autoLoadPage(page) {
   let location = pages[page]["Locations"];  //Locations => Class, TodoName, columnIndex, ulId
   let task = pages[page]["Tasks"]  //Tasks => id: '2srg4t6y', name: 'a1', status: 'active', ulId: 'qluI9List'      
   for(loc in location) {
-    createCard(location[loc].Class, location[loc].TodoName, location[loc].columnIndex, location[loc].ulId, location[loc].taskName, location[loc].status);
+    createCard(location[loc].Class, location[loc].TodoName, location[loc].columnIndex, location[loc].ulId, location[loc].taskName, task[loc].length);
   }
 
+  var count = 0;
   for(tas in task) {
     for(i in task[tas]) {
-      //console.log(task[tas][i].name);
-      let objectTask = taskObjectCreate(task[tas][i].name, task[tas][i].ulId);
-      //tasks[task[tas][i].ulId].unshift(objectTask);
-      let taskWord = (task[task[tas][i].ulId].length <= 1) ? " Task" : " Tasks";
-      $("#card__totaltasks").text(tasks[task[tas][i].ulId].length + taskWord);
+      let objectTask = task[tas][i];
       addTask(objectTask, "animateClass", task[tas][i].ulId, 'card__totaltasks');
     }
   }
 }
 
-function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
+function createCard(Class, TodoName, columnIndex, ulId, taskName, listCount) {
+  //console.log("listCount: "+listCount);
   let id = generateRandomId(5);
       let inputId = id+"Input";
       let card__statusAll = id+"card__statusAll";
@@ -271,15 +269,18 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, status) {
       locations[ulId] = locateObj;
       //console.log(pages);
 
+      let count = 0;
+      let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
+      $("#"+card__totaltasks).text((listCount + count++) + taskWord);
       $("#"+inputId).on("keydown", function(event) {
         if (event.keyCode === 13 && $(this).val() !== "") {
           let taskName = $(this).val().trim();
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
-          tasks[ulId].unshift(objectTask);
+          tasks[ulId].push(objectTask);
           //console.log(pages);
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
-          $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
+          $("#"+card__totaltasks).text((listCount + count++) + taskWord);
           addTask(objectTask, "animateClass", ulId, card__totaltasks);
         }
       });
