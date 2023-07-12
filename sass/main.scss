@@ -524,7 +524,7 @@ body {
   align-items: center;
   float: left;
   padding-bottom: 7rem;
-  background-color: rgba(249, 248, 248, .4);
+  //background-color: rgba(249, 248, 248, .4);
 }
 
 .list {
@@ -754,8 +754,9 @@ body {
   }
 
   &__list {
-
+    
     &--item {
+      height: 1%;
       display: flex;
       align-items: center;
       //padding-left: 1rem;
@@ -766,6 +767,7 @@ body {
     }
 
     &--input {
+      height: 1%;
       position: relative;
       background-color: transparent;
       border: none;
@@ -800,6 +802,7 @@ body {
 
 .active {
   background-color: #b8d0da;
+  height: 1%;
   width: 100%;
   padding: .2rem .5rem;
   border-radius: 3px;

@@ -5,7 +5,7 @@ let pageName = "Default";
 
 
 $(document).ready(function() {
-    //Implement remove pageName from pages
+    //Delete arr in page
     pages[pageName] = [];
     pages[pageName]["Locations"] = locations;
     pages[pageName]["Tasks"] = tasks;
@@ -142,9 +142,10 @@ $(document).ready(function() {
     });
 
     $('.navigation__list').on('click', '.navigation__list--item', function() {
-      console.log(pages);
+      console.log($(this).find('.navigation__list--input').val());
       $('.navigation__list--item').removeClass('active');
       let clickedPage = $(this).find('.navigation__list--input').val();
+      $('.createBtn').show()
       //clickedPage = clickedPage.toLowerCase();
       $(this).addClass('active');
       if(clickedPage != pageName) {
@@ -180,10 +181,30 @@ function pageAdd(inputValue, pageId) {
     .append(
       $('<input>').addClass('navigation__list--input').attr('type', 'text').val(inputValue),
       $('<button>').addClass('navigation__list--button').html('<i class="fa fa-remove"></i>')
+      .on('click', function() {
+        removePage(pageId, inputValue);
+      })
     );
 
   $('.navigation__list').append(newItem);
   $('.navigation__main--input').val('');
+}
+
+function removePage(pageId, inputValue){
+  $('#' + pageId).css('margin-bottom', '0px');
+  if (inputValue == pageName) {
+    console.log("HAVE");
+    $('.navigation__list--item').removeClass('active');
+    removeAllCard();
+  }
+  $("#"+pageId).empty()
+  if ($('.navigation__list--item').hasClass('active')) {
+    console.log('active present');
+    $('.createBtn').show()
+  }else {
+    console.log('not present');
+    $('.createBtn').hide()
+  }
 }
 
 function autoLoadPage(page) {
