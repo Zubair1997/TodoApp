@@ -26,6 +26,7 @@ function columnSort() {
           const notesContainerCount = $(this).children().length;
           Bcount = notesContainerCount - 1;
         });
+        
         let sort = 0;
         let indexValue = newItemIndex;
         for (const ulId in locations) {
@@ -44,8 +45,6 @@ function columnSort() {
         }    
         let locateObj = locationObjectCreate(displayTextId, ulId, indexValue, hasClass)
         locations[ulId] = locateObj;
-        console.log(locations);
-        //console.log(displayTextId + " " + ulId + " " + newItemIndex + " " + hasClass);
       }else{
         first = true
       }
@@ -83,9 +82,8 @@ function onSort(ulId) {
           return aIndex - bIndex;
         });
         
-        //pages[pageName]["Tasks"] = tasks;
-        console.log(tasks);
-        console.log(pages);
+        //console.log(tasks);
+        //console.log(pages);
         CalladdTaskHandler()
       }
     });

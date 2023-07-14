@@ -107,15 +107,11 @@ function addTask(task, animation = null, ulId, card__totaltasks) {
 }
 
 function updateTaskName(taskID, ulId, newTaskName){
-    //let newTaskName = $("#whiteDiv-Name").val();
     const taskIndex = tasks[ulId].findIndex(task => task.id === taskID);
-
     // If the task exists, update its name and insert it back into the array
     if (taskIndex !== -1 && tasks[ulId][taskIndex].name != newTaskName.trim()) {
       tasks[ulId][taskIndex].name = newTaskName;
       CalladdTaskHandler()
-      //console.log(task.id + " Updated");
-      //changeTaskNameInSpan(taskID, newTaskName, labelId, ulId);
     }
 }   
 

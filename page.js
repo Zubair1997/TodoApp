@@ -6,6 +6,7 @@ let pageName = "Default";
 
 $(document).ready(function() {
     //Delete arr in page
+    //local storage
     pages[pageName] = [];
     pages[pageName]["Locations"] = locations;
     pages[pageName]["Tasks"] = tasks;
@@ -124,7 +125,7 @@ $(document).ready(function() {
 
     //add page
     $(".navigation__main--input").on("keydown", function(event) {
-      if (event.keyCode === 13 && $(this).val() !== "") {
+      if (event.keyCode === 13 && $(this).val().trim() !== "") {
         let pageId = generateRandomId(5) + $(this).val();
         pageAdd($(this).val(), pageId)
       }
@@ -137,7 +138,10 @@ $(document).ready(function() {
         pages[changeName] = pages[pageName];
         delete pages[pageName];
         pageName = changeName;
-        console.log(pages);
+        // $(this).remove();
+        // let pageId = generateRandomId(5) + changeName;
+        // pageAdd(changeName, pageId)
+        // console.log($(this));
       }
     });
 
@@ -146,7 +150,6 @@ $(document).ready(function() {
       $('.navigation__list--item').removeClass('active');
       let clickedPage = $(this).find('.navigation__list--input').val();
       $('.createBtn').show()
-      //clickedPage = clickedPage.toLowerCase();
       $(this).addClass('active');
       if(clickedPage != pageName) {
         pageName = clickedPage;
@@ -191,20 +194,23 @@ function pageAdd(inputValue, pageId) {
 }
 
 function removePage(pageId, inputValue){
+  console.log("inputValue: "+inputValue);
   $('#' + pageId).css('margin-bottom', '0px');
   if (inputValue == pageName) {
-    console.log("HAVE");
+    //console.log("HAVE");
     $('.navigation__list--item').removeClass('active');
     removeAllCard();
   }
-  $("#"+pageId).empty()
+  $("#"+pageId).empty();
+  delete pages[inputValue];
   if ($('.navigation__list--item').hasClass('active')) {
-    console.log('active present');
+    //console.log('active present');
     $('.createBtn').show()
   }else {
-    console.log('not present');
+    //console.log('not present');
     $('.createBtn').hide()
   }
+ // console.log(pages);
 }
 
 function autoLoadPage(page) {
@@ -244,7 +250,7 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, listCount) {
         //console.log("Defined tasks[ulId] as an empty array.");
       }
       //---  ID End
-      const cardEl = $("<div>").addClass("card").css("height", "5%").attr("id", id);
+      const cardEl = $("<div>").addClass("card").css("height", "5%").attr("id", id);  //css("height", "5%") => to resize card after deleting list
       const headEl = $("<div>").addClass("card__head");
       const headingInputEl = $("<input>").attr("placeholder", "Add a name").attr("type", "text").addClass("card__heading").attr("id", displayTextId);
       const heading2El = $("<div>").addClass("card__heading-2");
@@ -285,6 +291,7 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, listCount) {
           next();
         });
       });
+      
       $("#" + displayTextId).val(TodoName);
       let locateObj = locationObjectCreate($("#" + displayTextId).val(), ulId, Bcount, Class)
       locations[ulId] = locateObj;
@@ -294,7 +301,7 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, listCount) {
       let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
       $("#"+card__totaltasks).text((listCount + count++) + taskWord);
       $("#"+inputId).on("keydown", function(event) {
-        if (event.keyCode === 13 && $(this).val() !== "") {
+        if (event.keyCode === 13 && $(this).val().trim() !== "") {
           let taskName = $(this).val().trim();
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
