@@ -2,34 +2,35 @@ function changeShowList(display, ulId) {
     $("#"+ulId).empty();
     if (display === "All") {
         for (const task of tasks[ulId]) {
-        addTask(task, null, ulId);
+            addTask(task, null, ulId);
         }
     } else if (display === "Active") {
         for (const task of tasks[ulId]) {
-        if (task.status == 'active') {
-            addTask(task, null, ulId);
-        }
+            if (task.status == 'active') {
+                addTask(task, null, ulId);
+            }
         }
     } else if (display === "Completed") {
         for (const task of tasks[ulId]) {
-        if (task.status == 'completed') {
-            addTask(task, null, ulId);
-        }
+            if (task.status == 'completed') {
+                addTask(task, null, ulId);
+            }
         }
     }
 }
   
 function deleteList(taskId, liId, ulId, card__totaltasks) {
-$('#'+liId).addClass('animateClassReverse').delay(470).queue(function(next) {
-    $(this).remove();
-    next();
-});
-tasks[ulId] = $.grep(tasks[ulId], function(task) {
-    return task.id !== taskId;
-});
-let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
-$("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
-CalladdTaskHandler();
+    $('#'+liId).addClass('animateClassReverse').delay(470).queue(function(next) {
+        $(this).remove();
+        next();
+    });
+    tasks[ulId] = $.grep(tasks[ulId], function(task) {
+        return task.id !== taskId;
+    });
+    let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
+    $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
+    CalladdTaskHandler();
+    setLocalStorage();
 }
 
 function changeBackground(checkboxId, liID, taskId, ulId) {
@@ -40,6 +41,8 @@ var listItem = $("#" + liID);
 //and do not reposition list.
 var beforeStatus = null;
 if (checkbox.checked) {
+    //console.log("INHERE");
+    //console.log(tasks[ulId]);
     $.each(tasks[ulId], function(index, task) {
     if (task.id === taskId && task.status != "completed") {
         beforeStatus = "active"
@@ -81,7 +84,8 @@ if (checkbox.checked) {
         listItem.appendTo(listItem.parent());
         tasks[ulId].push(element);
         }
-        CalladdTaskHandler()
+        CalladdTaskHandler();
+        setLocalStorage();
     }
     //console.log(tasks);
     }
@@ -115,7 +119,8 @@ if (checkbox.checked) {
         const element = tasks[ulId].splice(index, 1)[0];
         tasks[ulId].unshift(element);
     }
-    CalladdTaskHandler()
+    CalladdTaskHandler();
+    setLocalStorage();
     //console.log(tasks);
     }
 }
