@@ -59,7 +59,7 @@ const addTaskHandler = async (tasks) => {
   // }
 };
 
-function addTask(task, animation = null, ulId, card__totaltasks) {
+function addTask(task, animation = null, ulId, card__totaltasks, position=false) {
   //console.log(tasks);
   var liID = generateRandomId(5);
   var checkboxid = liID + "Checkbox";
@@ -88,11 +88,15 @@ function addTask(task, animation = null, ulId, card__totaltasks) {
     })
   );
 
-  if (animation === null) {
-    $("#"+ulId).append(listItem);
-  } else {
-    $("#"+ulId).append(listItem);
-    CalladdTaskHandler()
+  if(position != false){
+    $("#"+ulId).children().eq(position).after(listItem);
+  }else{
+    if (animation === null) {
+      $("#"+ulId).append(listItem);
+    } else {
+      $("#"+ulId).append(listItem);
+      CalladdTaskHandler()
+    }
   }
 
   $('#'+liID).addClass(''+animation+'').delay(550).queue(function(next) {

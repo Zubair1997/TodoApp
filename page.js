@@ -5,20 +5,6 @@ let pageName = "default";
 const storageKey = "data";
 
 $(document).ready(function() {
-    //Delete arr in page
-    //local storage
-
-    // pages[pageName] = [];
-    // pages[pageName]["Locations"] = locations;
-    // pages[pageName]["Tasks"] = tasks;
-    // autoLoadPage("Default");
-
-    //Page Add navigation__list--button
-    //----
-    // let pageId = generateRandomId(5) + "Default";
-    // pageAdd("Default", pageId)
-    // $("#"+pageId).addClass("active");
-
     const createBtnEl = $(".createBtn");
     getLocalStorage();
     
@@ -93,10 +79,25 @@ $(document).ready(function() {
           let taskName = $(this).val().trim();
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
-          tasks[ulId].push(objectTask);
+          //tasks[ulId].push(objectTask);
+          let position = 0;   //for index, insert before completed task
+          for(i in tasks[ulId]) {
+            console.log(tasks[ulId][i].status);
+            if(tasks[ulId][i].status == 'completed') {
+              position = i;
+              break;
+            }
+          }
+          if(position >= 0 && position < tasks[ulId].length && position != 0){
+            tasks[ulId].splice(position, 0, objectTask);
+            console.log(tasks[ulId]);
+          }else {
+            tasks[ulId].push(objectTask);
+          }
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
           $("#"+card__totaltasks).text(tasks[ulId].length + taskWord);
           addTask(objectTask, "animateClass", ulId, card__totaltasks);
+          //changeShowList("All", ulId) //Easy fix, try to remove 
           setLocalStorage();
         }
       });
@@ -185,7 +186,7 @@ function pageAdd(inputValue, pageId) {
       $('<button>').addClass('navigation__list--button').html('<i class="fa fa-remove"></i>')
       .on('click', function() {
         removePage(pageId, inputValue);
-        setLocalStorage();
+        setLocalStorage('removePage');
       })
     );
 
@@ -203,6 +204,7 @@ function removePage(pageId, inputValue){
   }
   $("#"+pageId).empty();
   delete pages[inputValue];
+  pageName = null;
   if ($('.navigation__list--item').hasClass('active')) {
     //console.log('active present');
     $('.createBtn').show()
@@ -217,8 +219,16 @@ function autoLoadPage(page) {
   //console.log("autoLoadPage "+ page);
   let location = pages[page]["Locations"];  //Locations => Class, TodoName, columnIndex, ulId
   let task = pages[page]["Tasks"]  //Tasks => id: '2srg4t6y', name: 'a1', status: 'active', ulId: 'qluI9List'      
+  console.log(task);
+  console.log(location);
+  let present = false;
   for(loc in location) {
-    createCard(location[loc].Class, location[loc].TodoName, location[loc].columnIndex, location[loc].ulId, location[loc].taskName, task[loc].length);
+    for(t in task){
+      if(t == loc) {
+        createCard(location[loc].Class, location[loc].TodoName, location[loc].columnIndex, location[loc].ulId, location[loc].taskName, task[t].length);
+        break;
+      }
+    }
   }
 
   var count = 0;
@@ -304,11 +314,24 @@ function createCard(Class, TodoName, columnIndex, ulId, taskName, listCount) {
           let taskName = $(this).val().trim();
           let objectTask = taskObjectCreate(taskName, ulId);
           $(".card__input").val("");
-          tasks[ulId].push(objectTask);
-          //console.log(pages);
+          //tasks[ulId].push(objectTask);
+          let position = null;   //for index, insert before completed task
+          for(i in tasks[ulId]) {
+            console.log(tasks[ulId][i].status);
+            if(tasks[ulId][i].status == 'completed') {
+              position = i;
+              break;
+            }
+          }
+          if(position >= 0 && position < tasks[ulId].length && position != null){
+            tasks[ulId].splice(position, 0, objectTask);
+            console.log(tasks[ulId]);
+          }else {
+            tasks[ulId].push(objectTask);
+          }
           let taskWord = (tasks[ulId].length <= 1) ? " Task" : " Tasks";
           $("#"+card__totaltasks).text((listCount + count++) + taskWord);
-          addTask(objectTask, "animateClass", ulId, card__totaltasks);
+          addTask(objectTask, "animateClass", ulId, card__totaltasks, position-1);
           setLocalStorage();
         }
       });

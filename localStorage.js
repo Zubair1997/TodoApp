@@ -1,14 +1,20 @@
-function setLocalStorage() {
+function setLocalStorage(action) {
     console.log("SET-STORAGE: "+pageName);
+    if(pageName == null || action == 'removePage') {
+        localStorage.setItem(storageKey, JSON.stringify(pages));
+        return;
+    }
     let taskKey = pageName+"task"
     let locationKey = pageName+"location"
     let t_ask = [];
     let l_cation = [];
-    for(id in pages[pageName]["Tasks"]) {
-        t_ask.push(pages[pageName]["Tasks"][id])
-    }
-    for(id in pages[pageName]["Locations"]) {
-        l_cation.push(pages[pageName]["Locations"][id])
+    if(pageName != null) {
+        for(id in pages[pageName]["Tasks"]) {
+            t_ask.push(pages[pageName]["Tasks"][id])
+        }
+        for(id in pages[pageName]["Locations"]) {
+            l_cation.push(pages[pageName]["Locations"][id])
+        }
     }
     localStorage.setItem(storageKey, JSON.stringify(pages));
     localStorage.setItem(taskKey, JSON.stringify(t_ask));
@@ -20,7 +26,7 @@ function getLocalStorage() {
     let activeId = false;
     let data = localStorage.getItem(storageKey);
     pages = JSON.parse(data);
-    
+    console.log(pages);
     if(pages != null) {
         for (pagename in pages) {
             let taskKey = pagename+"task";
